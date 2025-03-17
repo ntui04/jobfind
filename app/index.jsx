@@ -1,13 +1,39 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { useState } from 'react';
+import { View, ScrollView, SafeAreaView,Text } from 'react-native';
+import { Stack, useRouter} from 'expo-router';
 
-const HomePage = () => {
-    return (
-        <div>
-            <h1>Welcome to the Home Page</h1>
-            <p>This is the home page of the application.</p>
-        </div>
-    );
-};
+import { COLORS, icons, images, SIZES} from '../constants';
+import { Nearbyjobs, Popularjobs, ScreenHeaderBtn, Welcome} from '../components';
 
-ReactDOM.render(<HomePage />, document.getElementById('root'));
+const Home = () => { 
+    const router = useRouter();
+    return ( 
+        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite}}>
+            <Stack.Screen
+                options={{
+                    headerStyle: { backgroundColor: COLORS.lightWhite},
+                    headerShadowVisible: false,
+                    headerLeft: ()=>(
+                        <ScreenHeaderBtn iconUrl={icons.menu} dimension="60%"/>
+                    ),
+                    headerRight: ()=>(
+                        <ScreenHeaderBtn iconUrl={icons.profile} dimension="100%"/>
+                    ),
+                    headerTitle: " "
+                }}
+            />
+           <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={{
+                    flex:1,
+                    padding: SIZES.medium
+                }}> 
+                <Welcome/>
+                <Popularjobs/>
+                <Nearbyjobs/>
+                </View>
+           </ScrollView>
+        </SafeAreaView>
+     );
+}
+ 
+export default Home;
