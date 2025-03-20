@@ -13,6 +13,12 @@ const JobDetails = () => {
     // Added useState import and initialization
     const [refreshing, setRefreshing] = useState(false);
     
+    // Add state for active tab
+    const [activeTab, setActiveTab] = useState("About");
+    
+    // Define tabs
+    const tabs = ["About", "Qualifications", "Responsibilities"];
+    
     // Get job ID from the route parameters
     const { id } = params;
     
@@ -28,6 +34,26 @@ const JobDetails = () => {
         setRefreshing(true);
         refetch();
         setRefreshing(false);
+    };
+
+    // Function to display content based on active tab
+    const displayTabContent = () => {
+        switch (activeTab) {
+            case "About":
+                return <JobAbout info={jobDetails.job_description ?? "No data provided"} />;
+            case "Qualifications":
+                return <Specifics 
+                    title="Qualifications" 
+                    points={jobDetails.job_highlights?.Qualifications ?? ["N/A"]} 
+                />;
+            case "Responsibilities":
+                return <Specifics 
+                    title="Responsibilities" 
+                    points={jobDetails.job_highlights?.Responsibilities ?? ["N/A"]} 
+                />;
+            default:
+                return null;
+        }
     };
 
     return (
@@ -83,10 +109,14 @@ const JobDetails = () => {
                                 location={jobDetails.job_country}
                             />
                             
-                            <JobTabs />
+                            <JobTabs 
+                                tabs={tabs}
+                                activeTab={activeTab}
+                                setActiveTab={setActiveTab}
+                            />
                             
-                            
-                            {/* Add more job detail components here */}
+                            {/* Display content based on active tab */}
+                            {displayTabContent()}
                         </View>
                     )}
                 </ScrollView>
